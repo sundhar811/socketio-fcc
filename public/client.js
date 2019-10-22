@@ -13,11 +13,17 @@ $( document ).ready(function() {
     }
     $('#messages').append($('<li>').html('<b>'+ message +'<\/b>'));
   });
+  
+  socket.on('chat message', function(data){
+    let message = data.name.concat(': ', data.message)
+    $('#messages').append($('<li>').html(message));
+  });
      
   // Form submittion with new message in field with id 'm'
   $('form').submit(function(){
-    var messageToSend = $('#m').val();
+    let messageToSend = $('#m').val();
     //send message to server here?
+    socket.emit('chat message', messageToSend);
     $('#m').val('');
     return false; // prevent form submit from refreshing page
   });
